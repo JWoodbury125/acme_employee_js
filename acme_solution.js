@@ -31,5 +31,28 @@ const findManagmentChain = (arr) => {
          }, [])
 
     
-    console.log(workers)
+    return workers;
+}
+
+const generateManagementTree = (arr) => {
+    let workers = arr.filter(value => (value['name'] !== 'moe'));
+    let boss = arr.filter(value => value['name'] === 'moe')[0];
+    let ids = workers.map(value => value['id']);
+    let manageTree = {};
+
+    
+    for(let i =0; i<ids.length; i++){
+        let downstream = [];
+        for(let j=0; j<ids.length; j++){
+            if (ids[i] === workers[j]["managerId"]){
+                downstream.push(workers[j]);
+            }
+            
+        workers[i]['reports'] = downstream;
+        }
+    }
+
+    boss['reports'] = workers.filter(value => value.managerId === boss.id);
+    
+    return boss;
 }
